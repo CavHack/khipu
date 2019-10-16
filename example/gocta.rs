@@ -102,7 +102,8 @@ async fn main() {
     let glyph = GlyphDef::deserialize(&mut json::Deserializer::from_reader(credential)).unwrap();
 
     let stream = khipu::StreamBuilder::filter(glyph.as_ref())
-        .track(Some(TRACK))
+        .track(&['twitter', 'facebook', 'google', 'travel', 'art', 'music', 'photography', 'love', 'fashion', 'food'])
+	
         .listen()
         .unwrap()
         .try_flatten_stream();
@@ -149,3 +150,51 @@ async fn main() {
         .unwrap();
 }
 
+
+
+fn analyse(text: &str) -> i32 {
+    // Read the word-to-sentiment-score library
+    let ordered_word_scores = include_str!("data/afinn/AFINN-en-165.txt");
+
+    // Uniqueness by Chars (vs Grapheme clusters) should be fine here...
+    let valid_chars: HashSet<char> = ordered_word_scores.chars().unique().collect();
+
+    // TODO: 31 words that have a space in them
+    let mut word_to_score = BTreeMap::new();
+    for line in ordered_word_scores.lines() {
+        let v: Vec<&str> = line.splitn(2, "\t").collect();
+        let word = v[0];
+        let score = v[1].parse::<i32>().unwrap();
+        word_to_score.insert(word, score);
+    }
+
+    // Compute the score
+    println!("Scoring Words...");
+    let scores: Vec<i32> = text
+        .to_lowercase()  // Known words and chars are in lower-case
+        .chars()
+        .filter(|char| valid_chars.contains(char))  // Remove unknown characters
+        .collect::<String>()
+        .split_whitespace()
+        .filter(|word| word_to_score.contains_key(word))  // Filter out for better avg
+        .map(|word| match word_to_score.get(word) {
+                Some(&score)    => {
+                    println!("++ {:?} {:?}", word, score);
+                    score
+                },
+                // Superfluous match due to above filter
+                None            => {
+                    // println!("-- {:?} {:?}", word, 0);
+                    0
+                },
+            })
+        .collect();
+
+    let sum: i32 = scores.iter().sum();
+    let len = scores.len();
+    let avg = sum as f32 / len as f32;
+    println!("Sum: {:?}, Len: {:?}", sum, len);
+
+    // Word scores are between -5 and 5, so multiple to give -100 to 100 rating
+    (avg * 20.0) as i32
+}
