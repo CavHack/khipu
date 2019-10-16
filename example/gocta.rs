@@ -80,7 +80,8 @@ struct Consumer {
 
 #[derive(Deserialize)]
 #[serde(remote = "Credentials")]
-struct Access {    #[serde(rename = "access_key")]
+struct Access {    
+    #[serde(rename = "access_key")]
     identifier: String,
     #[serde(rename = "access_secret")]
     secret: String,
@@ -88,8 +89,6 @@ struct Access {    #[serde(rename = "access_key")]
 
 #[rt::main]
 async fn main() {
-
-   
 
 
     const TRACK: &str = "@NAME_OF_YOUR_ACCOUNT";
