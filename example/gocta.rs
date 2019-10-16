@@ -154,7 +154,7 @@ async fn main() {
 
 fn analyse(text: &str) -> i32 {
     // Read the word-to-sentiment-score library
-    let ordered_word_scores = include_str!("data/afinn/AFINN-en-165.txt");
+    let ordered_word_scores = include_str!("data/word-en-grade.txt");
 
     // Uniqueness by Chars (vs Grapheme clusters) should be fine here...
     let valid_chars: HashSet<char> = ordered_word_scores.chars().unique().collect();
