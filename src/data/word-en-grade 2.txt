@@ -1,0 +1,11 @@
+twitter   -2
+facebook  -2
+google   -1
+travel    1
+art      1
+music     2
+photography    2
+love      2
+fashion   3
+food     4
+ 
