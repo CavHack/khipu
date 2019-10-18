@@ -35,3 +35,24 @@ where
         }))
     }
 }
+
+impl<S: TryStream<Error = Error> + Unpin> Stream for Brotli<S>
+where
+    S::Ok: Into<Bytes>,
+    S::Error: Unpin,
+{
+    type item = Result<Chunk, Error>;
+
+    fn poll_next(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>>{
+        (&mut self.0)
+            .map_ok(Into::<Bytes>::into)
+            .poll_next_unpin(cx)
+            .map(|option| {
+                option.map(|result| {
+                    result
+                        .map(Into::<Chunk>::into)
+                        .map_err(|e| self.0.get_mut().error.take().unwrap_or(Error::Brotli(e)))
+                })
+            })
+    }
+}
