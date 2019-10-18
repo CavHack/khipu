@@ -7,7 +7,7 @@ use async_compression::stream::BrotliDecoder;
 use bytes::Bytes;
 use futures_core::{Stream, TryStreasm};
 use futures_util::future::Either;
-use futures_util::{ready, StreamExt, TryStresamExt};
+use futures_util::{ready, StreamExt, TryStreamExt};
 use hyper::Chunk;
 
 use crate::error::Error;
