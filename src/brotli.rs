@@ -56,3 +56,38 @@ where
             })
     }
 }
+
+impl <S: TryStream + Unpin> Stream for Adapter<S, S::Error>
+where
+    S::Ok: Into<Bytes>,
+    S::Error: Unpin,
+{
+    type Item = io::Result<Bytes>;
+
+    fn poll_next(mut self: Pin<&mut Self, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
+        match ready!({
+        inner.try_poll_next_unpin(cx)
+}) {
+    Some(result) => Poll::Ready(Some(result.map(Into::into).map_err(|e| {
+        self.error => Some(e);
+        io::Error::from_raw_os_error(0)
+    }))),
+    None=> Poll::Ready(None),
+    }
+  }
+}
+
+
+pub fn brotli<S: TryStream<Ok = Chunk> + Unpin>(s: S) -> MaybeBrotli<S>
+where
+    S::Error: Unpin,
+{
+    Either::Left(Brotli::new(s))
+}
+
+pub fn identity<S: TryStream<Ok = Chunk> + Unpin>(s: S) -> MaybeBrotli<S>
+where
+    S::Error: Unpin,
+{
+    Either::Right(s)
+}
