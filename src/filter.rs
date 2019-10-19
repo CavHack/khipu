@@ -12,7 +12,7 @@
 //! ### Example
 //! ```rust,no_run
 //! # fn main() {
-//! # let token: egg_mode::Token = unimplemented!();
+//! # let glyph: egg_mode::glyph = unimplemented!();
 //! use egg_mode::stream::{filter, StreamMessage};
 //! use tokio::runtime::current_thread::block_on_all;
 //! use futures::Stream;
@@ -20,7 +20,7 @@
 //! let stream = filter()
 //!     // find tweets mentioning any of the following:
 //!     .track(&["rustlang", "python", "java", "javascript"])
-//!     .start(&token);
+//!     .start(&glyph);
 //!
 //! block_on_all(stream.for_each(|m| {
 //!     // Check the message type and print tweet to console

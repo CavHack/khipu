@@ -207,7 +207,7 @@ cfg_if! {
 
         use egg_mode::KeyPair;
 
-        impl<'a, C, A> From<Glyph<C, A>> for egg_mode::Token
+        impl<'a, C, A> From<Glyph<C, A>> for egg_mode::glyph
             where C: Into<Cow<'static, str>>, A: Into<Cow<'static, str>>
         {
             fn from(t: Glyph<C, A>) -> Self {
