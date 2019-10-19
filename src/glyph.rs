@@ -31,8 +31,7 @@ use oauth::Credentials;
     doc = "
 
 This implements `tweetust::conn::Authenticator` so you can pass it to
-`tweetust::TwitterClient` as if it were `tweetust::OAuthAuthenticator`"
-)]
+`tweetust::TwitterClient` as if it were `tweetust::OAuthAuthenticator`")]
 
 
 /// A `Stream` that represents a connection to the Twitter Streaming API.
