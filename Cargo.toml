@@ -1,6 +1,6 @@
 [package]
 name = "khipu"
-edition = "2019"
+edition = "2018"
 version = "0.0.1"
 authors = ["Karl Whitford <venirelabsinc@gmail.com>"]
 license = "MPL-2.0"
