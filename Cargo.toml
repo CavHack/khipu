@@ -1,67 +1,36 @@
 [package]
 name = "khipu"
 edition = "2019"
-version = "0.10.0-alpha.1"
+version = "0.0.1"
 authors = ["Karl Whitford <venirelabsinc@gmail.com>"]
-license = "MIT"
+license = "MPL-2.0"
 readme = "README.md"
-
-description = """
-A library for listening on Twitter Streaming API and parsing Sentiment.
-"""
+description = "A library for listening on Twitter Streaming API and parsing Sentiment."
 
 [dependencies]
-"alloc-no-stdlib" = {version="2.0"}
-"brotli-decompressor" = {version="~2.3", default-features=false}
-"alloc-stdlib" = {version="~0.2", optional=true}
-"packed_simd" = {version="0.3", optional=true}
-"sha2" = {version="~0.8", optional=true}
-regex = "1"
-maplit = "1.0.1"
-lazy_static = "1.1.0"
-async-compression = { version = "0.1.0-alpha.1", default-features = false, features = ["Brotli", "stream"] }
-bytes = "0.4.4"
-cfg-if = "0.1"
-futures-core-preview = "0.3.0-alpha.17"
-futures-executor-preview = "0.3.0-alpha.17"
-futures-util-preview = "0.3.0-alpha.17"
-http = "0.1.11"
-hyper = { version = "0.13.0-alpha.1", default-features = false }
-memchr = "2"
-oauth = { version = "0.3.0", package = "oauth1-request" }
-string = "0.2"
-egg-mode = { version = "0.13", optional = true }
-hyper-tls = { version = "0.4.0-alpha.1", optional = true }
-oauthcli = { version = "1", optional = true }
-static_assertions = "0.3"
-tokio = { version = "0.2.0-alpha.1", optional = true }
-tokio-timer = { version = "0.3.0-alpha.1", optional = true }
-tweetust-pkg = { version = "0.10", optional = true, package = "tweetust" }
+base64 = "0.10.1"
+chrono = { version = "0.4.6", features = ["serde"] }
+futures = "0.1.27"
+hmac = "0.7.0"
+hyper = "0.12.29"
+hyper-rustls = { version = "0.16.1", optional = true }
+hyper-tls = { version = "0.3.2", optional = true }
+lazy_static = "1.3.0"
+native-tls = { version = "0.2.3", optional = true }
+mime = "0.3.13"
+rand = "0.6.5"
+regex = "1.1.6"
+serde = { version = "1.0.92", features = ["derive"] }
+serde_json = "1.0.39"
+sha-1 = "0.8.1"
+tokio = "0.1.21"
+url = "1.7.2"
 
 [features]
-default=["std"]
-validation=["sha2"]
-seccomp = ["brotli-decompressor/seccomp"]
-std = ["alloc-stdlib", "brotli-decompressor/std"]
-external-literal-probability = []
-disable-timer = ["brotli-decompressor/disable-timer"]
-benchmark = ["brotli-decompressor/benchmark"]
-vector_scratch_space = []
-simd = ["packed_simd/into_bits"]
-pass-through-ffi-panics = []
-default = ["runtime", "tls"]
-runtime = ["hyper/runtime", "tokio", "tokio-timer"]
-tls = ["hyper-tls", "runtime"]
-tweetust = ["oauthcli", "tweetust-pkg"]
-
-[[example]]
-name = "gocta"
-required-features = ["tweetust"]
+default = ["native_tls"]
+native_tls = ["native-tls", "hyper-tls"]
 
 [dev-dependencies]
-futures-preview = { version = "0.3.0-alpha.17" }
-version-sync = "0.8"
-# examples/echo_bot
-json = { version = "1", package = "serde_json" }
-serde = { version = "1", features = ["derive"] }
+yansi = "0.5.0"
+
 
